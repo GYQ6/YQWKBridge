@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OC与JS交互</title>
+    <script>
+        function loadURL(url) {
+            var iFrame;
+            iFrame = document.createElement("iframe");
+            iFrame.setAttribute("src", url);
+            iFrame.setAttribute("style", "display:none;");
+            iFrame.setAttribute("height", "0px");
+            iFrame.setAttribute("width", "0px");
+            iFrame.setAttribute("frameborder", "0");
+            document.body.appendChild(iFrame);
+            iFrame.parentNode.removeChild(iFrame);
+            iFrame = null;
+        }
+        
+    function locationHandle(){
+        var param = {};
+        //param.action = 'location';
+        param.handler = 'location';
+        param.callbackID = 'location';
+        param.callbackFunction = 'getLocation';
+        window.webkit.messageHandlers.YQWKBridge.postMessage(param);
+        //alert(param);
+    }
+    
+    function scanHandle(){
+        var param = {};
+        //param.action = 'scanQR';
+        param.handler = 'scanQR';
+        window.webkit.messageHandlers.YQWKBridge.postMessage(param);
+        //alert(param);
+    }
+    
+    function getLocation(callbackID, dic){
+        var lat = dic.lat;
+        var log  = dic.log;
+        alert(log + lat);
+    }
+    
+    //OC 调用js
+    function showAlert(callbackID, dic)
+    {
+        var name = dic.name;
+        alert(name);
+    }
+    
+    
+    </script>
+</head>
+<body>
+    <input type="button" value="JS调Native定位" onclick="locationHandle()" /><br />
+    <input type="button" value="JS调Native扫描二维码" onclick="scanHandle()" /><br />
+    <input type="button" value="WKUserScipt注入JS" onclick="myAlert()" /><br />
+</body>
+</html>
